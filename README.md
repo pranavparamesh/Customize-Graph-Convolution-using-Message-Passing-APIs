@@ -10,25 +10,10 @@ Design a new graph convolution module.
 
 
 
-Message passing and GNNs
-DGL follows the message passing paradigm inspired by the Message Passing Neural Network proposed by Gilmer et al. Essentially, they found many GNN models can fit into the following framework:
+# Message passing and GNNs
 
-$$
-m_{u\sim v}^{(l)} = M^{(l)}\left(h_v^{(l-1)}, h_u^{(l-1)}, e_{u\sim v}^{(l-1)}\right)
-$$$$
-m_{v}^{(l)} = \sum_{u\in\mathcal{N}(v)}m_{u\sim v}^{(l)}
-$$$$
-h_v^{(l)} = U^{(l)}\left(h_v^{(l-1)}, m_v^{(l)}\right)
-$$
-where DGL calls $M^{(l)}$ the message function and $\sum$ the reduce function. Note that $\sum$ here can represent any function and is not necessarily a summation.
-
-For example, the GraphSAGE model has the following mathematical form:
-
-$$
-h_{\mathcal{N}(v)}^k\leftarrow \text{Average}\{h_u^{k-1},\forall u\in\mathcal{N}(v)\}
-$$$$
-h_v^k\leftarrow \text{ReLU}\left(W^k\cdot \text{CONCAT}(h_v^{k-1}, h_{\mathcal{N}(v)}^k) \right)
-$$
-You can see that message passing is directional: the message sent from one node $u$ to other node $v$ is not necessarily the same as the other message sent from node $v$ to node $u$ in the opposite direction.
+DGL follows the message passing paradigm inspired by the Message Passing Neural Network proposed by Gilmer et al. Essentially, they found many GNN models can fit into the framework where DGL calls the message function and the reduce function. Note that here can represent any function and is not necessarily a summation.
+For example, the GraphSAGE model has the following mathematical forms
+You can see that message passing is directional: the message sent from one node to other node is not necessarily the same as the other message sent from node to node in the opposite direction.
 
 DGL graphs provide two members srcdata and dstdata for the purpose of message passing. You first put the input node features in srcdata. After you perform message passing, you can retrieve the result of message passing from dstdata.
